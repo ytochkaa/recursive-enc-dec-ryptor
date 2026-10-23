@@ -35,10 +35,16 @@ void dirWolker (const QString &pathfor){
     } else if (pathInfo.isDir()){
         std::cout << "it is directory" << std::endl;
 
-        QDirIterator pathDir(pathfor, QDirIterator::Subdirectories);
+        // QDirIterator (const QString &path,                           - где обходить: путь к папке
+        //                   QDir::Filters filters,                     - что показывать: флаги QDir::..., склеиваются через |
+        //                   IteratorFlags flags = NoIteratorFlags);    - как обходить: Subdirectories - заходить в подпапки,
+        //                                                                по умолчанию (NoIteratorFlags) только верхний уровень
+        // QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot - какие записи показывать: файлы и папки, без "." и ".."
+        QDirIterator pathIteratro(pathfor, QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
 
-        while (pathDir.hasNext()){
-            QFileInfo entry = pathDir.nextFileInfo();
+        while (pathIteratro.hasNext()){
+            pathIteratro.next();
+            QFileInfo entry = pathIteratro.fileInfo();
 
             if (entry.isSymLink()) {
                 std::cout << "it is link on file/directory: " << entry.filePath().toStdString() << std::endl;
