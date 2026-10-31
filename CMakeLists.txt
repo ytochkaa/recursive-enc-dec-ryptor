@@ -8,6 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(Qt5 REQUIRED COMPONENTS Core)
+find_package(cryptopp CONFIG REQUIRED)
 
 add_executable(encryptor
     src/main.cpp
@@ -16,7 +17,7 @@ add_executable(encryptor
 )
 
 target_include_directories(encryptor PRIVATE src)
-target_link_libraries(encryptor PRIVATE Qt5::Core)
+target_link_libraries(encryptor PRIVATE Qt5::Core cryptopp-shared)
 
 # Копировать DLL Qt рядом с exe, чтобы программа запускалась без изменения PATH
 add_custom_command(TARGET encryptor POST_BUILD
